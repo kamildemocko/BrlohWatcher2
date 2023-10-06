@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="brloh_watcher2:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/brloh_watcher2_jar</output-path>
+    <root id="archive" name="brloh_watcher2.jar">
+      <element id="module-output" name="brloh_watcher2" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/jsoup-1.16.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

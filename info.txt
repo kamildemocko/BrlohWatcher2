@@ -1,0 +1,16 @@
+after creating .jar file (jdk 17):
+
+1. Dockerfile:
+	FROM openjdk
+	WORKDIR /app
+	COPY ./out/artifacts/brloh_watcher2_jar/brloh_watcher2.jar /app/app.jar
+	CMD ["java", "-jar", "app.jar"]
+
+2. Build image
+	docker build -t brloh_watcher2 .
+
+3. Run image
+	docker run --name bw2 brloh_watcher2
+
+4. Add to schedule - start
+	docker start bw2
