@@ -1,40 +1,49 @@
+import records.Game;
 import req.Req;
 import scrapper.Scrapper;
 
 import java.io.IOException;
-
+import java.util.Arrays;
 
 public class Main {
-    static String outOfStockStatus = "Nie je skladom";
+    public static final Game[] games = {
+            new Game(
+                    "Jedi - survivor",
+                    "https://www.brloh.sk/star-wars-jedi-survivor-ps5-p43506",
+                    "https://www.brloh.sk/Products/Product/StoreInfoItems?productId=43506&productImeiId=null&query=&latitude=null&longitude=null&inStock=false",
+                    "Košice - Atrium Optima"
+            ),
+            new Game(
+                    "Gran Turismo 7",
+                    "https://www.brloh.sk/gran-turismo-7-ps5-p23717",
+                    "https://www.brloh.sk/Products/Product/StoreInfoItems?productId=23717&productImeiId=null&query=&latitude=null&longitude=null&inStock=false",
+                    "Košice - Atrium Optima"
+            )
+    };
 
     public static void main(String[] args) {
-        Req.sendNotification("Jedi - Survivor is now available", "https://www.brloh.sk/star-wars-jedi-survivor-ps5-p43506");
+        Arrays.asList(games).forEach(game -> {
+            System.out.printf("Checking game %s in city %s.\n", game.name(), game.city());
+            boolean gameAvailable = checkOnCity(game.checkLink(), game.city());
+            if (gameAvailable) {
+                System.out.printf("Found different status for game %s\n", game.name());
+                Req.sendNotification(game.name(), game.link());
+            }
 
-        String myCity = "Košice - Atrium Optima";
-
-        // https://www.brloh.sk/star-wars-jedi-survivor-ps5-p43506
-        String jedi_survivor = "https://www.brloh.sk/Products/Product/StoreInfoItems?productId=43506&productImeiId=null&query=&latitude=null&longitude=null&inStock=false";
-        boolean jedi_survivor_available = checkOnCity(jedi_survivor, myCity);
-        if (jedi_survivor_available) {
-            Req.sendNotification("Jedi - Survivor is now available", "https://www.brloh.sk/star-wars-jedi-survivor-ps5-p43506");
-        }
-
-        // https://www.brloh.sk/gran-turismo-7-ps5-p23717
-        String gran_turismo7 = "https://www.brloh.sk/Products/Product/StoreInfoItems?productId=23717&productImeiId=null&query=&latitude=null&longitude=null&inStock=false";
-        boolean grand_turismo7_available = checkOnCity(gran_turismo7, myCity);
-        if (grand_turismo7_available) {
-            Req.sendNotification("Gran turismo 7 is now available", "https://www.brloh.sk/gran-turismo-7-ps5-p23717");
-        }
+        });
     }
 
     private static boolean checkOnCity(String uri, String checkedCity) {
+        final String OUT_OF_STOCK_STATUS = "Nie je skladom";
+
         Scrapper scrapper = new Scrapper();
+        boolean returnStatus = false;
 
         try {
             String status = scrapper.getBrlohGameStatus(uri, checkedCity);
 
-            if (!status.equals(outOfStockStatus)) {
-                return true;
+            if (!status.equals(OUT_OF_STOCK_STATUS)) {
+                returnStatus = true;
             }
 
         } catch (IOException ex) {
@@ -44,6 +53,6 @@ public class Main {
             System.out.printf(ex.toString());
         }
 
-        return false;
+        return returnStatus;
     }
 }
