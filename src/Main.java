@@ -7,12 +7,12 @@ import java.util.Arrays;
 
 public class Main {
     public static final Game[] games = {
-            new Game(
-                    "Jedi - survivor",
-                    "https://www.brloh.sk/star-wars-jedi-survivor-ps5-p43506",
-                    "https://www.brloh.sk/Products/Product/StoreInfoItems?productId=43506&productImeiId=null&query=&latitude=null&longitude=null&inStock=false",
-                    "Košice - Atrium Optima"
-            ),
+//            new Game(
+//                    "Jedi - survivor",
+//                    "https://www.brloh.sk/star-wars-jedi-survivor-ps5-p43506",
+//                    "https://www.brloh.sk/Products/Product/StoreInfoItems?productId=43506&productImeiId=null&query=&latitude=null&longitude=null&inStock=false",
+//                    "Košice - Atrium Optima"
+//            ),
             new Game(
                     "Gran Turismo 7",
                     "https://www.brloh.sk/gran-turismo-7-ps5-p23717",
