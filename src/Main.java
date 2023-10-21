@@ -17,6 +17,7 @@ public class Main {
         List<String> games;
         Map<String, String> config = getConfig();
         if (config.isEmpty()) {
+            System.out.println("Nenajdeny konfiguracny subor config.ini");
             return;
         }
 
