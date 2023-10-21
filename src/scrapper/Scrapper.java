@@ -5,29 +5,41 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import records.ShopData;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class Scrapper {
-    public String getBrlohGameStatus(String uri, String city) throws Exception {
-        Map<String, String> shops = getAllShops(uri);
-        String requestedCity = shops.get(city);
+    public ShopData getOneShop(String uriProduct, String uriShops, String city) throws Exception {
+        Map<String, ShopData> shops = getAllShops(uriProduct, uriShops);
 
-        return (requestedCity == null) ? "" : requestedCity;
+        if (!shops.containsKey(city)) {
+            return new ShopData("", "");
+        }
+
+        return shops.get(city);
     }
 
 
-    private Map<String, String> getAllShops(String uri) throws Exception {
-        Connection connection = Jsoup.connect(uri).timeout(6000);
-        Document document = connection.get();
+    private Map<String, ShopData> getAllShops(String uriProduct, String uriShops) throws Exception {
+        Map<String, ShopData> result = new HashMap<>();
 
-        assertStatusCode(connection);
+        Connection connectionProdct = Jsoup.connect(uriProduct).timeout(6000);
+        Connection connectionShops = Jsoup.connect(uriShops).timeout(6000);
+        Document documentProduct = connectionProdct.get();
+        Document documentShops = connectionShops.get();
 
-        Elements shops = document.select("div.storeInfo-item");
-//        List<Map<String, String>> result = new ArrayList<>();
-        Map<String, String> result = new HashMap<>();
+        assertStatusCode(connectionProdct);
+        assertStatusCode(connectionShops);
 
+        Element titleElement = documentProduct.select("h1.detail-title-mobile").first();
+        String title = (titleElement != null) ? titleElement.ownText() : "";
+        if (title.isEmpty()) {
+            throw new UnsupportedOperationException("Title not found on web page, possibly wrong webpage");
+        }
+
+        Elements shops = documentShops.select("div.storeInfo-item");
         for (Element shop : shops){
             Element cityElement = shop.select("div.store-text>span").first();
             Element statusElement = shop.select("div.storeInfo-item-status").first();
@@ -39,7 +51,8 @@ public class Scrapper {
                 continue;
             }
 
-            result.put(city, status);
+            ShopData resList = new ShopData(title, status);
+            result.put(city, resList);
         }
 
         return result;
