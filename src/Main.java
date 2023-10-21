@@ -41,14 +41,14 @@ public class Main {
 
             ShopData shopCityData = getCityData(gameLink, checkGameLink, config.get("moje_mesto"));
             if (shopCityData.title().isEmpty() || shopCityData.status().isEmpty()) {
-                System.out.printf("Nenajdeny obchod v meste %s, skoontroluj spravnost", config.get("moje_mesto"));
+                System.out.printf("Nenajdeny obchod v meste %s, skoontroluj spravnost mesta%n", config.get("moje_mesto"));
                 return;
             }
 
             boolean gameAvailable = !shopCityData.status().equals(config.get("nie_je_skladom_web_text"));
             if (gameAvailable) {
                 System.out.printf("Najdena zmena status pre hru %s\n", shopCityData.title());
-                Req.sendNotification(shopCityData.title(), gameLink);
+                Req.sendNotification(shopCityData.title(), gameLink, config.get("ntfy_kanal"));
             }
             else {
                 System.out.println("Hra v statuse 'Nie je skladom'");

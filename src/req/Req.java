@@ -6,9 +6,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Req {
-    public static void sendNotification(String message, String link) {
+    public static void sendNotification(String message, String link, String channel) {
         try {
-            final URI NTFY_URI = new URI("https://ntfy.sh/dkdkdk12345");
+            final URI NTFY_URI = new URI(channel);
 
             var client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder(NTFY_URI)
@@ -18,9 +18,12 @@ public class Req {
                     .build();
 
             var response = client.send(request, HttpResponse.BodyHandlers.discarding());
+            if (response.statusCode() != 200) {
+                System.out.println("Chyba pri odosielani notifikacie, skontrolujte spravnost kanalu");
+            }
 
         } catch (Exception ex) {
-            System.out.println(ex);
+            System.out.printf("%s%n", ex);
         }
     }
 }
