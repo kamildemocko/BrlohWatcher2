@@ -27,6 +27,11 @@ ntfy_kanal = https://ntfy.sh/dkdkdk12345
 
 Udaje doplnit na zaklade udajov, tak ako su napisane na stranke brloh.sk
 
+<img width="251" alt="image" src="https://github.com/kamildemocko/brloh_watcher2/assets/50048116/e824bbac-ece5-4628-9ff5-c9f40b3b7c60">
+
+<img width="251" alt="image" src="https://github.com/kamildemocko/brloh_watcher2/assets/50048116/4f5b599a-3e5c-4cef-961d-5599b491d853">
+
+
 subor **hry-linky.txt**
 ```plain
 https://www.brloh.sk/gran-turismo-7-ps5-p23717
